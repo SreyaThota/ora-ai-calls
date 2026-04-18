@@ -328,17 +328,22 @@ export const LiveCalls = () => {
               ))}
             </div>
 
-            <div className="p-4 border-t space-y-2">
+            {/* AI suggestion zone */}
+            <div className="p-4 border-t bg-ai-soft/30">
+              <div className="flex items-center gap-1.5 mb-2 text-[11px] font-semibold uppercase tracking-wide text-ai">
+                <Sparkles className="h-3 w-3" />
+                AI Suggestion
+              </div>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
                     onClick={triggerHandoff}
                     disabled={!canTriggerHandoff}
                     className={cn(
-                      "w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all border",
+                      "w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all border-2 border-dashed",
                       aiRecommendsHuman
-                        ? "bg-destructive/10 border-destructive/40 text-destructive animate-pulse"
-                        : "bg-secondary border-transparent text-foreground hover:bg-secondary/80",
+                        ? "bg-destructive/10 border-destructive/50 text-destructive animate-pulse"
+                        : "bg-card border-ai/40 text-ai hover:bg-ai-soft",
                       !canTriggerHandoff && "opacity-50 cursor-not-allowed"
                     )}
                   >
@@ -350,7 +355,14 @@ export const LiveCalls = () => {
                   <TooltipContent>AI recommends human takeover</TooltipContent>
                 )}
               </Tooltip>
+            </div>
 
+            {/* Human action zone */}
+            <div className="p-4 border-t bg-secondary/40">
+              <div className="flex items-center gap-1.5 mb-2 text-[11px] font-semibold uppercase tracking-wide text-foreground/70">
+                <Hand className="h-3 w-3" />
+                Your Actions
+              </div>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setAiHandling((v) => !v)}
