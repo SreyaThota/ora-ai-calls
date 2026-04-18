@@ -484,8 +484,8 @@ export const LiveCalls = () => {
 
 const SummaryModal = ({ seconds, onClose }: { seconds: number; onClose: () => void }) => (
   <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-foreground/40 backdrop-blur-sm animate-fade-slide-in p-6">
-    <div className="bg-card rounded-xl shadow-soft border w-full max-w-lg overflow-hidden my-auto">
-      <div className="flex items-center justify-between px-5 py-3 border-b">
+    <div className="w-full max-w-lg my-auto space-y-4">
+      <div className="bg-card rounded-xl shadow-soft border overflow-hidden">
         <div className="flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-ai" />
           <div className="font-semibold">Call Summary — Auto-generated</div>
