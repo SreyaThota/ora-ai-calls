@@ -350,7 +350,6 @@ export const LiveCalls = () => {
                     <UserPlus className="h-4 w-4" />
                     Involve Human Agent
                   </button>
-                </TouchTrigger if={false} />
                 </TooltipTrigger>
                 {aiRecommendsHuman && (
                   <TooltipContent>AI recommends human takeover</TooltipContent>
