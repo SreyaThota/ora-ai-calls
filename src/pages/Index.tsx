@@ -1,16 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect, useState } from "react";
+import { Sidebar, type Screen } from "@/components/ora/Sidebar";
+import { LiveCalls } from "@/components/ora/LiveCalls";
+import { Outreach } from "@/components/ora/Outreach";
+import { TeamOverview } from "@/components/ora/TeamOverview";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const titles: Record<Screen, string> = {
+  live: "Live Calls",
+  outreach: "Proactive Outreach",
+  team: "Team & AI Overview",
+};
+
+const Index = () => {
+  const [screen, setScreen] = useState<Screen>("live");
+
+  useEffect(() => {
+    document.title = `Ora · ${titles[screen]}`;
+    const desc =
+      "Ora — AI-native phone system for B2C: live AI co-pilot, proactive outreach, and human-AI collaboration.";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", desc);
+  }, [screen]);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="flex min-h-screen w-full bg-surface">
+      <Sidebar active={screen} onChange={setScreen} />
+      <main className="flex-1 min-w-0 overflow-x-hidden">
+        <header className="sr-only">
+          <h1>Ora — {titles[screen]}</h1>
+        </header>
+        {screen === "live" && <LiveCalls />}
+        {screen === "outreach" && <Outreach />}
+        {screen === "team" && <TeamOverview />}
+      </main>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
