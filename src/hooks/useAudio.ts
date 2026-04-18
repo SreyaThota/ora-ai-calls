@@ -5,7 +5,10 @@ export const useAudio = () => {
   const [muted, setMuted] = useState(audio.muted);
 
   useEffect(() => {
-    return audio.subscribe(setMuted);
+    const unsub = audio.subscribe(setMuted);
+    return () => {
+      unsub();
+    };
   }, []);
 
   return {
