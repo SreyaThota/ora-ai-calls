@@ -486,62 +486,66 @@ const SummaryModal = ({ seconds, onClose }: { seconds: number; onClose: () => vo
   <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-foreground/40 backdrop-blur-sm animate-fade-slide-in p-6">
     <div className="w-full max-w-lg my-auto space-y-4">
       <div className="bg-card rounded-xl shadow-soft border overflow-hidden">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-ai" />
-          <div className="font-semibold">Call Summary — Auto-generated</div>
-        </div>
-        <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
-          <X className="h-4 w-4" />
-        </button>
-      </div>
-      <div className="p-5 space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-ai text-ai-foreground flex items-center justify-center font-semibold text-sm">
-            SC
+        <div className="flex items-center justify-between px-5 py-3 border-b">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-ai" />
+            <div className="font-semibold">Call Summary — Auto-generated</div>
           </div>
-          <div>
-            <div className="font-medium text-sm">Sarah Chen · Order #4821</div>
-            <div className="text-xs text-muted-foreground tabular-nums">
-              Duration: {formatTime(seconds)}
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="p-5 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-gradient-ai text-ai-foreground flex items-center justify-center font-semibold text-sm">
+              SC
+            </div>
+            <div>
+              <div className="font-medium text-sm">Sarah Chen · Order #4821</div>
+              <div className="text-xs text-muted-foreground tabular-nums">
+                Duration: {formatTime(seconds)}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="text-sm leading-relaxed text-foreground/85 bg-secondary rounded-lg p-3.5">
-          Sarah called regarding her delayed wireless headphones order. Apologized for the
-          warehouse delay in Memphis, offered a complimentary express reship arriving Dec 13 in
-          time for her daughter's birthday, and applied a $20 store credit as a goodwill gesture.
-          Customer expressed satisfaction and confirmed the resolution.
-        </div>
+          <div className="text-sm leading-relaxed text-foreground/85 bg-secondary rounded-lg p-3.5">
+            Sarah called regarding her delayed wireless headphones order. Apologized for the
+            warehouse delay in Memphis, offered a complimentary express reship arriving Dec 13 in
+            time for her daughter's birthday, and applied a $20 store credit as a goodwill gesture.
+            Customer expressed satisfaction and confirmed the resolution.
+          </div>
 
-        <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-lg bg-success-soft p-2">
-            <div className="text-[10px] uppercase tracking-wide text-success-soft-foreground">Outcome</div>
-            <div className="text-xs font-semibold text-success-soft-foreground mt-0.5">Resolved</div>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-lg bg-success-soft p-2">
+              <div className="text-[10px] uppercase tracking-wide text-success-soft-foreground">Outcome</div>
+              <div className="text-xs font-semibold text-success-soft-foreground mt-0.5">Resolved</div>
+            </div>
+            <div className="rounded-lg bg-ai-soft p-2">
+              <div className="text-[10px] uppercase tracking-wide text-ai-soft-foreground">Sentiment</div>
+              <div className="text-xs font-semibold text-ai-soft-foreground mt-0.5">Positive</div>
+            </div>
+            <div className="rounded-lg bg-info-soft p-2">
+              <div className="text-[10px] uppercase tracking-wide text-info-soft-foreground">CSAT</div>
+              <div className="text-xs font-semibold text-info-soft-foreground mt-0.5">5 / 5</div>
+            </div>
           </div>
-          <div className="rounded-lg bg-ai-soft p-2">
-            <div className="text-[10px] uppercase tracking-wide text-ai-soft-foreground">Sentiment</div>
-            <div className="text-xs font-semibold text-ai-soft-foreground mt-0.5">Positive</div>
-          </div>
-          <div className="rounded-lg bg-info-soft p-2">
-            <div className="text-[10px] uppercase tracking-wide text-info-soft-foreground">CSAT</div>
-            <div className="text-xs font-semibold text-info-soft-foreground mt-0.5">5 / 5</div>
+
+          <div className="flex items-center gap-2 text-success text-sm font-medium">
+            <CheckCircle2 className="h-4 w-4" />
+            Synced to CRM
           </div>
         </div>
-
-        <div className="flex items-center gap-2 text-success text-sm font-medium">
-          <CheckCircle2 className="h-4 w-4" />
-          Synced to CRM
+        <div className="px-5 py-3 border-t bg-surface flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm font-medium rounded-lg bg-foreground text-background hover:opacity-90"
+          >
+            Close
+          </button>
         </div>
       </div>
-      <div className="px-5 py-3 border-t bg-surface flex justify-end">
-        <button
-          onClick={onClose}
-          className="px-4 py-2 text-sm font-medium rounded-lg bg-foreground text-background hover:opacity-90"
-        >
-          Close
-        </button>
-      </div>
+
+      <SentimentTimeline />
     </div>
   </div>
 );
