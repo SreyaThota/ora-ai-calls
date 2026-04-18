@@ -330,13 +330,13 @@ export const LiveCalls = () => {
                 <TooltipTrigger asChild>
                   <button
                     onClick={triggerHandoff}
-                    disabled={onHold || humanJoined}
+                    disabled={onHold || humanJoined || callEnded}
                     className={cn(
                       "w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all border",
                       aiRecommendsHuman
                         ? "bg-destructive/10 border-destructive/40 text-destructive animate-pulse"
                         : "bg-secondary border-transparent text-foreground hover:bg-secondary/80",
-                      (onHold || humanJoined) && "opacity-50 cursor-not-allowed"
+                      (onHold || humanJoined || callEnded) && "opacity-50 cursor-not-allowed"
                     )}
                   >
                     <UserPlus className="h-4 w-4" />
@@ -351,13 +351,13 @@ export const LiveCalls = () => {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setAiHandling((v) => !v)}
-                  disabled={humanJoined}
+                  disabled={humanJoined || callEnded}
                   className={cn(
                     "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium text-white transition-colors",
                     aiHandling
                       ? "bg-info hover:bg-info/90"
                       : "bg-success hover:bg-success/90",
-                    humanJoined && "opacity-50 cursor-not-allowed"
+                    (humanJoined || callEnded) && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   {aiHandling ? <Bot className="h-4 w-4" /> : <Hand className="h-4 w-4" />}
@@ -365,10 +365,10 @@ export const LiveCalls = () => {
                 </button>
                 <button
                   onClick={triggerHandoff}
-                  disabled={onHold || humanJoined}
+                  disabled={onHold || humanJoined || callEnded}
                   className={cn(
                     "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-primary-foreground transition-colors bg-primary hover:bg-primary/90",
-                    (onHold || humanJoined) && "opacity-50 cursor-not-allowed"
+                    (onHold || humanJoined || callEnded) && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   <PhoneCall className="h-4 w-4" />
@@ -447,10 +447,14 @@ export const LiveCalls = () => {
 
           <button
             onClick={handleEndCall}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-destructive hover:bg-destructive/90 text-destructive-foreground py-3 text-sm font-medium transition-colors"
+            disabled={callEnded}
+            className={cn(
+              "w-full flex items-center justify-center gap-2 rounded-lg bg-destructive hover:bg-destructive/90 text-destructive-foreground py-3 text-sm font-medium transition-colors",
+              callEnded && "opacity-50 cursor-not-allowed hover:bg-destructive"
+            )}
           >
             <PhoneOff className="h-4 w-4" />
-            End Call & Auto-Summarize
+            {callEnded ? "Call Ended" : "End Call & Auto-Summarize"}
           </button>
         </section>
 
