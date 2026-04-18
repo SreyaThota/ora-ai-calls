@@ -508,4 +508,4 @@ const SummaryModal = ({ seconds, onClose }: { seconds: number; onClose: () => vo
   </div>
 );
 
-import { Phone as PhoneIcon } from "lucide-react";
+
