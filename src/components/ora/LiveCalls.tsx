@@ -66,6 +66,7 @@ export const LiveCalls = () => {
   const [holdSeconds, setHoldSeconds] = useState(0);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [humanJoined, setHumanJoined] = useState(false);
+  const [callEnded, setCallEnded] = useState(false);
   const startRef = useRef(Date.now());
   const lastHintCount = useRef(0);
   const audioCtl = useAudio();
@@ -73,12 +74,12 @@ export const LiveCalls = () => {
   // Call timer (pauses when on hold)
   useEffect(() => {
     const id = setInterval(() => {
-      if (!onHold) {
+      if (!onHold && !callEnded) {
         setSeconds(Math.floor((Date.now() - startRef.current) / 1000));
       }
     }, 1000);
     return () => clearInterval(id);
-  }, [onHold]);
+  }, [onHold, callEnded]);
 
   // Hold timer
   useEffect(() => {
@@ -133,9 +134,11 @@ export const LiveCalls = () => {
   };
 
   const handleEndCall = () => {
+    if (callEnded) return;
     audioCtl.playDisconnect();
     audioCtl.stopHoldMusic();
     audioCtl.stopRingtone();
+    setCallEnded(true);
     setShowSummary(true);
   };
 
@@ -219,7 +222,12 @@ export const LiveCalls = () => {
           <div className="bg-card rounded-xl border shadow-card overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b bg-surface">
               <div className="flex items-center gap-2 text-sm">
-                {onHold ? (
+                {callEnded ? (
+                  <>
+                    <span className="inline-flex h-2.5 w-2.5 rounded-full bg-muted-foreground/50" />
+                    <span className="font-medium text-muted-foreground">Call ended</span>
+                  </>
+                ) : onHold ? (
                   <>
                     <PauseCircle className="h-4 w-4 text-warning animate-pulse" />
                     <span className="font-medium">Customer on hold</span>
@@ -240,7 +248,17 @@ export const LiveCalls = () => {
             </div>
 
             {/* Waveform OR hold banner */}
-            {onHold ? (
+            {callEnded ? (
+              <div className="flex items-end justify-center gap-1.5 h-28 px-6 opacity-40">
+                {[0.6, 0.9, 0.5, 1.1, 0.75].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-2 rounded-full bg-muted-foreground"
+                    style={{ height: "60%" }}
+                  />
+                ))}
+              </div>
+            ) : onHold ? (
               <div className="h-28 px-6 flex items-center justify-center">
                 <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-warning-soft text-warning-soft-foreground text-sm font-medium animate-pulse">
                   <PauseCircle className="h-4 w-4" />
@@ -312,13 +330,13 @@ export const LiveCalls = () => {
                 <TooltipTrigger asChild>
                   <button
                     onClick={triggerHandoff}
-                    disabled={onHold || humanJoined}
+                    disabled={onHold || humanJoined || callEnded}
                     className={cn(
                       "w-full flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all border",
                       aiRecommendsHuman
                         ? "bg-destructive/10 border-destructive/40 text-destructive animate-pulse"
                         : "bg-secondary border-transparent text-foreground hover:bg-secondary/80",
-                      (onHold || humanJoined) && "opacity-50 cursor-not-allowed"
+                      (onHold || humanJoined || callEnded) && "opacity-50 cursor-not-allowed"
                     )}
                   >
                     <UserPlus className="h-4 w-4" />
@@ -333,13 +351,13 @@ export const LiveCalls = () => {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setAiHandling((v) => !v)}
-                  disabled={humanJoined}
+                  disabled={humanJoined || callEnded}
                   className={cn(
                     "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium text-white transition-colors",
                     aiHandling
                       ? "bg-info hover:bg-info/90"
                       : "bg-success hover:bg-success/90",
-                    humanJoined && "opacity-50 cursor-not-allowed"
+                    (humanJoined || callEnded) && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   {aiHandling ? <Bot className="h-4 w-4" /> : <Hand className="h-4 w-4" />}
@@ -347,10 +365,10 @@ export const LiveCalls = () => {
                 </button>
                 <button
                   onClick={triggerHandoff}
-                  disabled={onHold || humanJoined}
+                  disabled={onHold || humanJoined || callEnded}
                   className={cn(
                     "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-primary-foreground transition-colors bg-primary hover:bg-primary/90",
-                    (onHold || humanJoined) && "opacity-50 cursor-not-allowed"
+                    (onHold || humanJoined || callEnded) && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   <PhoneCall className="h-4 w-4" />
@@ -429,10 +447,14 @@ export const LiveCalls = () => {
 
           <button
             onClick={handleEndCall}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-destructive hover:bg-destructive/90 text-destructive-foreground py-3 text-sm font-medium transition-colors"
+            disabled={callEnded}
+            className={cn(
+              "w-full flex items-center justify-center gap-2 rounded-lg bg-destructive hover:bg-destructive/90 text-destructive-foreground py-3 text-sm font-medium transition-colors",
+              callEnded && "opacity-50 cursor-not-allowed hover:bg-destructive"
+            )}
           >
             <PhoneOff className="h-4 w-4" />
-            End Call & Auto-Summarize
+            {callEnded ? "Call Ended" : "End Call & Auto-Summarize"}
           </button>
         </section>
 
