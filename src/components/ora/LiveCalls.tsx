@@ -351,13 +351,13 @@ export const LiveCalls = () => {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setAiHandling((v) => !v)}
-                  disabled={humanJoined}
+                  disabled={humanJoined && !callEnded}
                   className={cn(
                     "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium text-white transition-colors",
                     aiHandling
                       ? "bg-info hover:bg-info/90"
                       : "bg-success hover:bg-success/90",
-                    humanJoined && "opacity-50 cursor-not-allowed"
+                    humanJoined && !callEnded && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   {aiHandling ? <Bot className="h-4 w-4" /> : <Hand className="h-4 w-4" />}
@@ -365,10 +365,10 @@ export const LiveCalls = () => {
                 </button>
                 <button
                   onClick={triggerHandoff}
-                  disabled={onHold || humanJoined}
+                  disabled={(onHold || humanJoined) && !callEnded}
                   className={cn(
                     "flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-primary-foreground transition-colors bg-primary hover:bg-primary/90",
-                    (onHold || humanJoined) && "opacity-50 cursor-not-allowed"
+                    (onHold || humanJoined) && !callEnded && "opacity-50 cursor-not-allowed"
                   )}
                 >
                   <PhoneCall className="h-4 w-4" />
