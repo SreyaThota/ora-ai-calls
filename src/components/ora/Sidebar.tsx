@@ -1,13 +1,15 @@
-import { Phone, Radar, Users, AudioWaveform } from "lucide-react";
+import { Phone, Radar, Users, AudioWaveform, SplitSquareHorizontal, BarChart3 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-export type Screen = "live" | "outreach" | "team";
+export type Screen = "live" | "outreach" | "team" | "handoff" | "insights";
 
 const items: { id: Screen; label: string; icon: React.ElementType }[] = [
   { id: "live", label: "Live Calls", icon: Phone },
   { id: "outreach", label: "Proactive Outreach", icon: Radar },
   { id: "team", label: "Team Overview", icon: Users },
+  { id: "handoff", label: "Active Handoff", icon: SplitSquareHorizontal },
+  { id: "insights", label: "Product Insights", icon: BarChart3 },
 ];
 
 export const Sidebar = ({ active, onChange }: { active: Screen; onChange: (s: Screen) => void }) => {
