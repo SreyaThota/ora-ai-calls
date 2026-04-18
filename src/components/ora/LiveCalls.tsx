@@ -66,6 +66,7 @@ export const LiveCalls = () => {
   const [holdSeconds, setHoldSeconds] = useState(0);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [humanJoined, setHumanJoined] = useState(false);
+  const [callEnded, setCallEnded] = useState(false);
   const startRef = useRef(Date.now());
   const lastHintCount = useRef(0);
   const audioCtl = useAudio();
@@ -73,12 +74,12 @@ export const LiveCalls = () => {
   // Call timer (pauses when on hold)
   useEffect(() => {
     const id = setInterval(() => {
-      if (!onHold) {
+      if (!onHold && !callEnded) {
         setSeconds(Math.floor((Date.now() - startRef.current) / 1000));
       }
     }, 1000);
     return () => clearInterval(id);
-  }, [onHold]);
+  }, [onHold, callEnded]);
 
   // Hold timer
   useEffect(() => {
@@ -133,9 +134,11 @@ export const LiveCalls = () => {
   };
 
   const handleEndCall = () => {
+    if (callEnded) return;
     audioCtl.playDisconnect();
     audioCtl.stopHoldMusic();
     audioCtl.stopRingtone();
+    setCallEnded(true);
     setShowSummary(true);
   };
 
@@ -219,7 +222,12 @@ export const LiveCalls = () => {
           <div className="bg-card rounded-xl border shadow-card overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b bg-surface">
               <div className="flex items-center gap-2 text-sm">
-                {onHold ? (
+                {callEnded ? (
+                  <>
+                    <span className="inline-flex h-2.5 w-2.5 rounded-full bg-muted-foreground/50" />
+                    <span className="font-medium text-muted-foreground">Call ended</span>
+                  </>
+                ) : onHold ? (
                   <>
                     <PauseCircle className="h-4 w-4 text-warning animate-pulse" />
                     <span className="font-medium">Customer on hold</span>
@@ -240,7 +248,17 @@ export const LiveCalls = () => {
             </div>
 
             {/* Waveform OR hold banner */}
-            {onHold ? (
+            {callEnded ? (
+              <div className="flex items-end justify-center gap-1.5 h-28 px-6 opacity-40">
+                {[0.6, 0.9, 0.5, 1.1, 0.75].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-2 rounded-full bg-muted-foreground"
+                    style={{ height: "60%" }}
+                  />
+                ))}
+              </div>
+            ) : onHold ? (
               <div className="h-28 px-6 flex items-center justify-center">
                 <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-warning-soft text-warning-soft-foreground text-sm font-medium animate-pulse">
                   <PauseCircle className="h-4 w-4" />
