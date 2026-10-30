@@ -2,7 +2,7 @@
 
 An interactive product demo of **Ora**, an AI-native phone system for B2C support teams. It shows how an AI agent could handle a live customer call, brief the human agent before they pick up, and hand the call over smoothly when a person needs to step in.
 
-**Live demo:** _link added after deployment_
+**Live demo:** https://ora-ai-calls.vercel.app
 
 ## What you can try
 - **Live Calls**: a simulated incoming call with a pre-call AI briefing (predicted intent, customer value, last order), a live transcript, and a sentiment timeline.
