@@ -4,6 +4,12 @@ An interactive product demo of **Ora**, an AI-native phone system for B2C suppor
 
 **Live demo:** https://ora-ai-calls.vercel.app
 
+| | |
+|---|---|
+| **Type** | Hackathon pitch prototype (front end only, simulated data) |
+| **Stack** | React · TypeScript · Vite · Tailwind · shadcn/ui |
+| **Live demo** | [ora-ai-calls.vercel.app](https://ora-ai-calls.vercel.app) |
+
 ## What you can try
 - **Live Calls**: a simulated incoming call with a pre-call AI briefing (predicted intent, customer value, last order), a live transcript, and a sentiment timeline.
 - **Human handoff**: take control of the call, join it, or bring in a human agent, then review the handoff summary.
